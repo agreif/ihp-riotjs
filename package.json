@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@riotjs/cli": "^6.1.0"
+  }
+}
