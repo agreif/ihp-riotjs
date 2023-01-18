@@ -65,10 +65,7 @@ devScripts = [hsx|
         <script src={assetPath "/riot-7.1.0/riot-compiler.min.js"}></script>
         <script src={assetPath "/riot/my-tag.riot"} type="riot"></script>
         <script>
-          (async function main() {
-          await riot.compile()
-          riot.mount('my-tag')
-          }())
+          (async function main() { await riot.compile(); riot.mount('my-tag') }())
         </script>
     |]
 
