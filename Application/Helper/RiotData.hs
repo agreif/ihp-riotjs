@@ -53,11 +53,13 @@ instance ToJSON RegisterPage where
 data RegisterForm = RegisterForm
   { params :: RegisterFormParams
   , errors :: RegisterFormErrors
+  , postDataUrl :: Text
   }
 instance ToJSON RegisterForm where
   toJSON o = object
     [ "params" .= o.params
     , "errors" .= o.errors
+    , "postDataUrl" .= o.postDataUrl
     ]
 
 data RegisterFormParams = RegisterFormParams
@@ -76,12 +78,14 @@ data RegisterFormErrors = RegisterFormErrors
   { login :: [Text]
   , email :: [Text]
   , password :: [Text]
+  , misc :: [Text]
   }
 instance ToJSON RegisterFormErrors where
   toJSON o = object
     [ "login" .= o.login
     , "email" .= o.email
     , "password" .= o.password
+    , "misc" .= o.misc
     ]
 
 -- LOGIN PAGE
@@ -107,7 +111,7 @@ instance ToJSON LoginForm where
   toJSON o = object
     [ "params" .= o.params
     , "errors" .= o.errors
-    , "postDataUrl" .= o.errors
+    , "postDataUrl" .= o.postDataUrl
     ]
 
 data LoginFormParams = LoginFormParams
@@ -123,10 +127,12 @@ instance ToJSON LoginFormParams where
 data LoginFormErrors = LoginFormErrors
   { login :: [Text]
   , password :: [Text]
+  , misc :: [Text]
   }
 instance ToJSON LoginFormErrors where
   toJSON o = object
     [ "login" .= o.login
     , "password" .= o.password
+    , "misc" .= o.misc
     ]
 

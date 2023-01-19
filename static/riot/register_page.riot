@@ -34,6 +34,9 @@
 		    <li each="{msg in context.data.pages.register.form.errors.password}"><span class="uk-text-danger">{msg}</span></li>
 		  </ul>
 		</div>
+		<ul class="uk-list uk-list-collapse">
+		  <li each="{msg in context.data.pages.register.form.errors.misc}"><span class="uk-text-danger">{msg}</span></li>
+		</ul>
 		<div class="uk-margin">
                   <button onclick="{register}" class="uk-button uk-button-primary uk-button-large uk-width-1-1">{context.data.translations['Register']}</button>
 		</div>
@@ -57,8 +60,8 @@
 	register(event) {
 	    event.preventDefault()
 	    this.context.postForm(
-		this.context.data.pages.register.form.post_data_url,
-		this.context.data.pages.register.csrf_token,
+		this.context.data.pages.register.form.postDataUrl,
+		this.context.data.pages.register.csrfToken,
 		'#register')
 	},
 
