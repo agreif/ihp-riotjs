@@ -15,21 +15,20 @@ instance Controller RegisterController where
 
   action GetRegisterPageDataAction = do
     translations <- translate
-    renderJson (toJSON $ RiotData
-                { pages = Pages
-                  { register = Just $ RegisterPage
-                    { form = RegisterForm
-                      { params = RegisterFormParams "a" "b" "c"
-                      , errors = RegisterFormErrors [] [] []
-                      }
-                    , loginUrl = urlTo GetLoginPageAction
-                    , getLoginDataUrl = urlTo GetLoginPageDataAction
-                    }
-                  , login = Nothing
-                  }
-                , translations = translations
+    renderJson $ toJSON $ RiotData
+      { pages = Pages
+                { register = Just $ RegisterPage
+                             { form = RegisterForm
+                               { params = RegisterFormParams "a" "b" "c"
+                               , errors = RegisterFormErrors [] [] []
+                               }
+                             , loginUrl = urlTo GetLoginPageAction
+                             , getLoginDataUrl = urlTo GetLoginPageDataAction
+                             }
+                , login = Nothing
                 }
-               )
+      , translations = translations
+      }
     where
       translate :: IO (KM.KeyMap Text)
       translate = languageMap

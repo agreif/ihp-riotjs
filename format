@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+ormolu -m inplace \
+       $(find . \
+	      -type f \
+	      -name "*.hs" \
+       )

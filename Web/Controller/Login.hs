@@ -15,22 +15,21 @@ instance Controller LoginController where
 
   action GetLoginPageDataAction = do
     translations <- translate
-    renderJson (toJSON $ RiotData
-                { pages = Pages
-                  { register = Nothing
-                  , login = Just $ LoginPage
-                    { form = LoginForm
-                      { params = LoginFormParams "a" "b"
-                      , errors = LoginFormErrors [] []
-                      , postDataUrl = ""
-                      }
-                    , registerUrl = urlTo GetRegisterPageAction
-                    , getRegisterDataUrl = urlTo GetRegisterPageDataAction
-                    }
-                  }
-                , translations = translations
+    renderJson $ toJSON $ RiotData
+      { pages = Pages
+                { register = Nothing
+                , login = Just $ LoginPage
+                          { form = LoginForm
+                            { params = LoginFormParams "a" "b"
+                            , errors = LoginFormErrors [] []
+                            , postDataUrl = ""
+                            }
+                          , registerUrl = urlTo GetRegisterPageAction
+                          , getRegisterDataUrl = urlTo GetRegisterPageDataAction
+                          }
                 }
-               )
+      , translations = translations
+      }
     where
       translate :: IO (KM.KeyMap Text)
       translate = languageMap
@@ -38,15 +37,3 @@ instance Controller LoginController where
                   , Translation {en = "Password", de = "Passwort"}
                   , Translation {en = "Register", de = "Registrieren"}
                   ]
-
-
-
-
-
-
-
-
-data Post = Post {text :: Text}
-
-instance ToJSON Post where
-  toJSON post = object ["text" .= post.text]
