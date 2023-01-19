@@ -12,9 +12,6 @@ import Application.Helper.RiotData
 
 -- Here you can add functions which are available in all your controllers
 
--- class IsSubmitForm f where
---   failures :: Text -> Maybe f -> [Text]
-
 languageMap :: (?context :: ControllerContext) => [Translation] -> IO (KM.KeyMap Text)
 languageMap translations = do
   language <- userLanguage

@@ -48,7 +48,7 @@ instance Controller RegisterController where
           |> set #passwordHash passwordHash
 
 
-getRiotData :: (?context::ControllerContext) => Maybe RegisterSubmitForm -> IO RiotData
+getRiotData :: (?context :: ControllerContext) => Maybe RegisterSubmitForm -> IO RiotData
 getRiotData maybeForm = do
   translations <- translate
   return $
@@ -62,10 +62,10 @@ getRiotData maybeForm = do
             , password = ""
             }
           , errors = RegisterFormErrors
-            { login = failures "login" maybeForm
-            , email = failures "email" maybeForm
-            , password = failures "password" maybeForm
-            , misc = failures "misc" maybeForm
+            { login = failures "login"
+            , email = failures "email"
+            , password = failures "password"
+            , misc = failures "misc"
             }
           , postDataUrl = urlTo PostRegisterDataAction
           }
@@ -77,19 +77,15 @@ getRiotData maybeForm = do
     , translations = translations
     }
     where
+      failures key = case maybeForm of
+                       Just form -> L.map (\(_, v) -> v.message) $ L.filter (\(k, _) -> k == key) form.meta.annotations
+                       otherwise -> []
       translate :: IO (KM.KeyMap Text)
       translate = languageMap
         [ Translation {en = "Forgot your password", de = "Forgot your password"}
         , Translation {en = "Password", de = "Password"}
         , Translation {en = "Register", de = "Register"}
         ]
-
-failures :: Text -> Maybe RegisterSubmitForm -> [Text]
-failures key maybeForm =
-  case maybeForm of
-    Just form -> L.map (\(_, v) -> v.message) $ L.filter (\(k, _) -> k == key) form.meta.annotations
-    otherwise -> []
-
 
 data RegisterSubmitForm'  = RegisterSubmitForm {id :: (Id' "registerSubmitForms"), login :: Text, email :: Text, password :: Text, meta :: MetaBag} deriving (Eq, Show)
 instance InputValue RegisterSubmitForm where inputValue = IHP.ModelSupport.recordToInputValue

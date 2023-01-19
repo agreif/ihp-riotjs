@@ -25,7 +25,7 @@ instance Controller LoginController where
     riotData <- getRiotData Nothing
     renderJson $ toJSON riotData
 
-getRiotData :: (?context::ControllerContext) => Maybe LoginSubmitForm -> IO RiotData
+getRiotData :: (?context :: ControllerContext) => Maybe LoginSubmitForm -> IO RiotData
 getRiotData maybeForm = do
     translations <- translate
     return $
