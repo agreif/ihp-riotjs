@@ -1,0 +1,71 @@
+<register-page>
+  <div class="uk-flex uk-flex-middle">
+    <div class="uk-width-1-1">
+      <div class="uk-container">
+	<div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
+          <div class="uk-width-1-1@m">
+            <div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+              <h3 class="uk-card-title uk-text-center">{context.data.translations['Register']}</h3>
+	      <form id="register">
+		<div class="uk-margin">
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+		    <input type="text" name="login" value="{context.data.pages.register.form.params.login}" class="uk-input uk-form-large" placeholder="Login">
+                  </div>
+		  <ul class="uk-list uk-list-collapse uk-margin-remove-top">
+		    <li each="{msg in context.data.pages.register.form.errors.login}"><span class="uk-text-danger">{msg}</span></li>
+		  </ul>
+		</div>
+		<div class="uk-margin">
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+		    <input type="text" name="email" value="{context.data.pages.register.form.params.email}" class="uk-input uk-form-large" placeholder="Email">
+                  </div>
+		  <ul class="uk-list uk-list-collapse uk-margin-remove-top">
+		    <li each="{msg in context.data.pages.register.form.errors.email}"><span class="uk-text-danger">{msg}</span></li>
+		  </ul>
+		</div>
+		<div class="uk-margin">
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+		    <input type="password" name="password" class="uk-input uk-form-large" placeholder="{context.data.translations['Password']}">
+                  </div>
+		  <ul class="uk-list uk-list-collapse uk-margin-remove-top">
+		    <li each="{msg in context.data.pages.register.form.errors.password}"><span class="uk-text-danger">{msg}</span></li>
+		  </ul>
+		</div>
+		<div class="uk-margin">
+                  <button onclick="{register}" class="uk-button uk-button-primary uk-button-large uk-width-1-1">{context.data.translations['Register']}</button>
+		</div>
+		<div class="uk-text-small uk-text-center uk-margin-top">
+		  <a href="{context.data.pages.register.login_url}" onclick="{showLoginPage}">Log in</a>
+		  |
+		  <a href="#">Forgot your password</a>
+		</div>
+	      </form>
+            </div>
+          </div>
+	</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    export default {
+	onBeforeMount(props) { this.context = props.context },
+
+	register(event) {
+	    event.preventDefault()
+	    this.context.postForm(
+		this.context.data.pages.register.form.post_data_url,
+		this.context.data.pages.register.csrf_token,
+		'#register')
+	},
+
+	showLoginPage() {
+	    event.preventDefault()
+	    this.context.refreshDataGet(this.context.data.pages.register.get_login_data_url)
+	}
+    }
+  </script>
+</register-page>

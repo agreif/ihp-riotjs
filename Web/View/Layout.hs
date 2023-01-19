@@ -1,4 +1,4 @@
-module Web.View.Layout (defaultLayout, Html) where
+module Web.View.Layout (defaultLayout, riotLayout, Html) where
 
 import IHP.ViewPrelude
 import IHP.Environment
@@ -9,6 +9,29 @@ import IHP.Controller.RequestContext
 import Web.Types
 import Web.Routes
 import Application.Helper.View
+
+riotLayout :: Html -> Html
+riotLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
+<head>
+    <link rel="stylesheet" href={assetPath "/uikit-3.15.21/css/uikit.min.css"}/>
+    <script src={assetPath "/uikit-3.15.21/js/uikit.min.js"}></script>
+    <script src={assetPath "/uikit-3.15.21/js/uikit-icons.min.js"}></script>
+    <script src={assetPath "/riot-7.1.0/riot-compiler.min.js"}></script>
+    <script src={assetPath "/riot/body_tag.riot"} type="riot"></script>
+    <script src={assetPath "/riot/login_page.riot"} type="riot"></script>
+    <script src={assetPath "/riot/register_page.riot"} type="riot"></script>
+    <script>
+      (async function main() {
+        await riot.compile()
+        riot.mount('body-tag')
+      }())
+    </script>
+    <title>{pageTitleOrDefault "App"}</title>
+</head>
+<body>
+    {inner}
+</body>
+|]
 
 defaultLayout :: Html -> Html
 defaultLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
@@ -37,7 +60,6 @@ stylesheets = [hsx|
         <link rel="stylesheet" href={assetPath "/vendor/bootstrap-5.2.1/bootstrap.min.css"}/>
         <link rel="stylesheet" href={assetPath "/vendor/flatpickr.min.css"}/>
         <link rel="stylesheet" href={assetPath "/app.css"}/>
-        <link rel="stylesheet" href={assetPath "/uikit-3.15.21/css/uikit.min.css"}/>
     |]
 
 scripts :: Html
@@ -55,18 +77,11 @@ scripts = [hsx|
         <script src={assetPath "/helpers.js"}></script>
         <script src={assetPath "/ihp-auto-refresh.js"}></script>
         <script src={assetPath "/app.js"}></script>
-        <script src={assetPath "/uikit-3.15.21/js/uikit.min.js"}></script>
-        <script src={assetPath "/uikit-3.15.21/js/uikit-icons.min.js"}></script>
     |]
 
 devScripts :: Html
 devScripts = [hsx|
         <script id="livereload-script" src={assetPath "/livereload.js"} data-ws={liveReloadWebsocketUrl}></script>
-        <script src={assetPath "/riot-7.1.0/riot-compiler.min.js"}></script>
-        <script src={assetPath "/riot/my-tag.riot"} type="riot"></script>
-        <script>
-          (async function main() { await riot.compile(); riot.mount('my-tag') }())
-        </script>
     |]
 
 metaTags :: Html

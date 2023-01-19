@@ -1,0 +1,75 @@
+<body-tag>
+  <register-page context="{this}" if="{data.pages.register}"></register-page>
+  <login-page context="{this}" if="{data.pages.login}"></login-page>
+
+  <script>
+    export default {
+	onBeforeMount(props) {
+            this.data = { pages: {} }
+	    this.refreshDataGet(props.dataUrl)
+	},
+
+	uikit() {
+            return UIkit
+	},
+
+	updateData(newData) {
+	    this.data = newData
+	    this.update()
+	},
+
+	updateHistory(newData) {
+	    if (newData.history_state
+		&& (!window.history.state
+		    || !window.history.state.data_url
+		    || (window.history.state.data_url
+			&& (window.history.state.data_url != newData.data_url)))) {
+		window.history.pushState({data_url: newData.data_url},
+					 newData.history_state.title,
+					 newData.history_state.url)
+	    }
+	},
+
+	refreshDataGet(dataUrl) {
+            fetch(dataUrl)
+		.then(res => res.json())
+      		.then(newData => {
+		    this.updateData(newData)
+		    this.updateHistory(newData)
+		})
+		.catch(err => console.error(err));
+	},
+
+	refreshDataPost(dataUrl, csrfToken) {
+	    this.postRequest(dataUrl, csrfToken, {})
+	},
+
+	postRequest(dataUrl, csrfToken, json, callbackFun) {
+	    fetch(dataUrl,
+		  { method: "POST",
+		    headers: {'Accept': 'application/json',
+			      'Content-Type': 'application/json',
+			      'x-csrf-token': csrfToken},
+		    body: JSON.stringify(json)}
+		 ).then(async rawResponse => {
+		     var newData = await rawResponse.json()
+		     if (typeof callbackFun === 'function') {
+			 callbackFun(newData)
+		     } else {
+			 this.updateData(newData)
+			 this.updateHistory(newData)
+		     }
+		 })
+	},
+
+	postForm(dataUrl, csrfToken, formSelector, callbackFun) {
+	    const formData = new FormData(this.$(formSelector))
+	    const formJson = Object.fromEntries(formData.entries())
+	    this.postRequest(dataUrl, csrfToken, formJson, callbackFun)
+	},
+
+
+    }
+  </script>
+
+</body-tag>

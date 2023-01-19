@@ -1,0 +1,77 @@
+<login-page>
+  <div class="uk-flex uk-flex-middle">
+    <div class="uk-width-1-1">
+      <div class="uk-container">
+	<div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
+          <div class="uk-width-1-1@m">
+            <div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+              <h3 class="uk-card-title uk-text-center">Login</h3>
+	      <form id="login">
+		<div class="uk-margin">
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+		    <input type="text" name="login" class="uk-input uk-form-large" placeholder="Login">
+                  </div>
+		  <ul class="uk-list uk-list-collapse uk-margin-remove-top">
+		    <li each="{msg in context.data.pages.login.form.errors.login}"><span class="uk-text-danger">{msg}</span></li>
+		  </ul>
+		</div>
+		<div class="uk-margin">
+                  <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+		    <input type="password" name="password" class="uk-input uk-form-large" placeholder="{context.data.translations['Password']}">
+                  </div>
+		  <ul class="uk-list uk-list-collapse uk-margin-remove-top">
+		    <li each="{msg in context.data.pages.login.form.errors.password}"><span class="uk-text-danger">{msg}</span></li>
+		  </ul>
+		</div>
+		<ul class="uk-list uk-list-collapse">
+		  <li each="{msg in context.data.pages.login.form.errors.misc}"><span class="uk-text-danger">{msg}</span></li>
+		</ul>
+		<div class="uk-margin">
+                  <button onclick="{login}" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Login</button>
+		</div>
+		<div class="uk-text-small uk-text-center uk-margin-top">
+		  <a href="{context.data.pages.login.register_url}" onclick="{showRegisterPage}">{context.data.translations['Register']}</a>
+		  |
+		  <a href="#">{context.data.translations['Forgot your password']}</a>
+		</div>
+	      </form>
+            </div>
+          </div>
+	</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    export default {
+	onBeforeMount(props) {this.context = props.context},
+	sp: " ",
+
+	login(event) {
+	    event.preventDefault()
+
+	    this.context.postForm(
+		this.context.data.pages.login.form.post_data_url,
+		this.context.data.pages.login.csrf_token,
+		'#login',
+		this.showErrorOrRedirectCallback)
+	},
+
+	showErrorOrRedirectCallback(data) {
+	    if (data.pages && data.pages.login) {
+		this.context.updateData(data)
+		this.context.updateHistory(data)
+	    } else {
+		window.location.href = '/'
+	    }
+	},
+
+	showRegisterPage() {
+	    event.preventDefault()
+	    this.context.refreshDataGet(this.context.data.pages.login.get_register_data_url)
+	}
+    }
+  </script>
+</login-page>
