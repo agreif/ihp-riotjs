@@ -6,13 +6,15 @@ import Web.View.Layout (defaultLayout)
 
 -- Controller Imports
 import Web.Controller.Static
-import Web.Controller.Riot
+import Web.Controller.Register
+import Web.Controller.Login
 
 instance FrontController WebApplication where
     controllers =
         [ startPage WelcomeAction
         -- Generator Marker
-        , parseRoute @RiotController
+        , parseRoute @RegisterController
+        , parseRoute @LoginController
         ]
 
 instance InitControllerContext WebApplication where

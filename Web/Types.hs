@@ -8,9 +8,12 @@ data WebApplication = WebApplication deriving (Eq, Show)
 
 data StaticController = WelcomeAction deriving (Eq, Show, Data)
 
-data RiotController
+data RegisterController
   = GetRegisterPageAction
   | GetRegisterPageDataAction
-  | GetLoginPageAction
+  deriving (Eq, Show, Data)
+
+data LoginController
+  = GetLoginPageAction
   | GetLoginPageDataAction
   deriving (Eq, Show, Data)

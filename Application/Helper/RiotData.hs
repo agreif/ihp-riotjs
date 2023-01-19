@@ -40,10 +40,14 @@ instance IsLabel "translationEn" (Translation -> Text) where
 
 data RegisterPage = RegisterPage
   { form :: RegisterForm
+  , loginUrl :: Text
+  , getLoginDataUrl :: Text
   }
 instance ToJSON RegisterPage where
   toJSON o = object
     [ "form" .= o.form
+    , "loginUrl" .= o.loginUrl
+    , "getLoginDataUrl" .= o.getLoginDataUrl
     ]
 
 data RegisterForm = RegisterForm
@@ -84,20 +88,26 @@ instance ToJSON RegisterFormErrors where
 
 data LoginPage = LoginPage
   { form :: LoginForm
+  , registerUrl :: Text
+  , getRegisterDataUrl :: Text
   }
 instance ToJSON LoginPage where
   toJSON o = object
     [ "form" .= o.form
+    , "registerUrl" .= o.registerUrl
+    , "getRegisterDataUrl" .= o.getRegisterDataUrl
     ]
 
 data LoginForm = LoginForm
   { params :: LoginFormParams
   , errors :: LoginFormErrors
+  , postDataUrl :: Text
   }
 instance ToJSON LoginForm where
   toJSON o = object
     [ "params" .= o.params
     , "errors" .= o.errors
+    , "postDataUrl" .= o.errors
     ]
 
 data LoginFormParams = LoginFormParams

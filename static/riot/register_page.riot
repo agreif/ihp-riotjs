@@ -38,7 +38,7 @@
                   <button onclick="{register}" class="uk-button uk-button-primary uk-button-large uk-width-1-1">{context.data.translations['Register']}</button>
 		</div>
 		<div class="uk-text-small uk-text-center uk-margin-top">
-		  <a href="{context.data.pages.register.login_url}" onclick="{showLoginPage}">Log in</a>
+		  <a href="{context.data.pages.register.loginUrl}" onclick="{showLoginPage}">Log in</a>
 		  |
 		  <a href="#">Forgot your password</a>
 		</div>
@@ -64,7 +64,7 @@
 
 	showLoginPage() {
 	    event.preventDefault()
-	    this.context.refreshDataGet(this.context.data.pages.register.get_login_data_url)
+	    this.context.refreshDataGet(this.context.data.pages.register.getLoginDataUrl)
 	}
     }
   </script>
