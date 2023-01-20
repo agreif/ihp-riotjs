@@ -3,6 +3,7 @@ module Web.Controller.Register where
 import IHP.ModelSupport
 import qualified IHP.AuthSupport.Authentication as Auth
 import Web.Controller.Prelude
+import qualified Web.Controller.Login (getRiotData)
 import Web.View.Layout (riotLayout)
 import Web.View.Riot.Main
 import Application.Helper.RiotData
@@ -30,7 +31,7 @@ instance Controller RegisterController where
                   Left form -> getRiotData $ Just form
                   Right form -> do
                     buildUser form >>= createRecord
-                    getRiotData $ Just form
+                    Web.Controller.Login.getRiotData Nothing
     renderJson $ toJSON riotData
     where
       buildForm form =
